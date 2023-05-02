@@ -1,0 +1,55 @@
+# 力扣之图
+
+## 200. 岛屿数量
+
+1. BFS
+
+    本质上求的是连通分量的个数。队列存储待访问的节点。
+
+    ```C++
+    for (int row = 0; row < nr; ++row) {
+        for (int column = 0; column < nc; ++column) {
+            if (grid[row][column] == '1') {
+                ++num_islands;
+                grid[row][column] = '0';
+                queue<pair<int, int>> neighbors;
+                neighbors.push({row, column});
+                while (!neighbors.empty()) {
+                    auto vex = neighbors.front();
+                    neighbors.pop();
+                    int r = vex.first, c = vex.second;
+                    if (r - 1 >= 0 && grid[r-1][c] == '1') {
+                            neighbors.push({r-1, c});
+                            grid[r-1][c] = '0';
+                    }
+                    if (row + 1 < nr && grid[row+1][col] == '1') 
+                    if (col - 1 >= 0 && grid[row][col-1] == '1') 
+                    if (col + 1 < nc && grid[row][col+1] == '1') 
+                }
+            }
+        }
+    }
+    ```
+
+2. DFS
+
+    使用栈来存储节点，递归调用函数，形成函数栈。
+
+    ```C++
+    for (int r = 0; r < nr; ++r) {
+        for (int c = 0; c < nc; ++c) {
+            if (grid[r][c] == '1') {
+                ++num_islands;
+                dfs(grid, r, c);
+            }
+        }
+    }
+
+    void dfs(vector<vector<char>>& grid, int r, int c) {
+        grid[r][c] = '0';
+        if (r - 1 >= 0 && grid[r-1][c] == '1') dfs(grid, r - 1, c);
+        if (r + 1 < nr && grid[r+1][c] == '1') dfs(grid, r + 1, c);
+        if (c - 1 >= 0 && grid[r][c-1] == '1') dfs(grid, r, c - 1);
+        if (c + 1 < nc && grid[r][c+1] == '1') dfs(grid, r, c + 1);
+    }
+    ```
